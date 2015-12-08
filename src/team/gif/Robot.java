@@ -29,7 +29,7 @@ public class Robot extends IterativeRobot {
 		// TODO: Check if it works if this is on same line as declaration
 		autoChooser = new SendableChooser();
 		autoChooser.addDefault("AntiAuto", new AntiAuto());
-		autoChooser.addObject("DriveStraight", new DriveStraight(0, 4));
+		autoChooser.addObject("DriveStraight", new DriveStraight());
 		autoChooser.addObject("TurnBack", new TurnBack());
 		SmartDashboard.putData("Auto Mode", autoChooser);
 		
@@ -63,6 +63,10 @@ public class Robot extends IterativeRobot {
     private void update() {
     	Scheduler.getInstance().run();
     	SmartDashboard.putNumber("Angle ", chassis.getAngle());
+    	SmartDashboard.putNumber("DriveStraight offset", 0);
+    	SmartDashboard.putNumber("DriveStraight speed", 0.35);
+    	SmartDashboard.putNumber("DriveStraight Kp", 0.015);
+    	SmartDashboard.putNumber("DriveStraight timeOut", 4);
     }
     
 }

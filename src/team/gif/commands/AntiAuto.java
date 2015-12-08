@@ -3,7 +3,7 @@ package team.gif.commands;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- *@author PatrickUbelhor
+ * @author PatrickUbelhor
  * DOES NOTHING.
  */
 public class AntiAuto extends Command {
@@ -12,9 +12,7 @@ public class AntiAuto extends Command {
 
     protected void initialize() {}
     protected void execute() {}
-    protected boolean isFinished() {
-        return false;
-    }
+    protected boolean isFinished() { return false; }
     protected void end() {}
     protected void interrupted() {}
 }
