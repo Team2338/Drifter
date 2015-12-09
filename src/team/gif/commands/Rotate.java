@@ -19,13 +19,14 @@ public class Rotate extends Command {
         this.Kp = Kp;
     }
 
-    protected void initialize() {
-    	error = setpoint - chassis.getAngle();
-    }
+    protected void initialize() {}
 
     protected void execute() {
-    	chassis.drive(Kp * error, -Kp * error);
+    	error = setpoint - chassis.getAngle();
+    	chassis.drive(-Kp * error, Kp * error);
     	SmartDashboard.putNumber("Error", error);
+    	SmartDashboard.putNumber("Left speed", Kp * error);
+    	SmartDashboard.putNumber("Right speed", Kp * error);
     }
 
     protected boolean isFinished() {

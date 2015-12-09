@@ -31,7 +31,13 @@ public class Robot extends IterativeRobot {
 		autoChooser.addDefault("AntiAuto", new AntiAuto());
 		autoChooser.addObject("DriveStraight", new DriveStraight());
 		autoChooser.addObject("TurnBack", new TurnBack());
+		autoChooser.addObject("Rotate", new Rotate(270, 0.015));
 		SmartDashboard.putData("Auto Mode", autoChooser);
+		
+		SmartDashboard.putNumber("DriveStraight offset", 0);
+    	SmartDashboard.putNumber("DriveStraight speed", 0.35);
+    	SmartDashboard.putNumber("DriveStraight Kp", 0.015);
+    	SmartDashboard.putNumber("DriveStraight timeOut", 4);
 		
 		teleCommand = new TankDrive();
     }
@@ -63,10 +69,6 @@ public class Robot extends IterativeRobot {
     private void update() {
     	Scheduler.getInstance().run();
     	SmartDashboard.putNumber("Angle ", chassis.getAngle());
-    	SmartDashboard.putNumber("DriveStraight offset", 0);
-    	SmartDashboard.putNumber("DriveStraight speed", 0.35);
-    	SmartDashboard.putNumber("DriveStraight Kp", 0.015);
-    	SmartDashboard.putNumber("DriveStraight timeOut", 4);
     }
     
 }

@@ -11,7 +11,7 @@ import static team.gif.Robot.chassis;
  */
 public class DriveStraight extends Command {
 	
-	private double desiredAngle;
+	private double angleSetpoint;
 	private double timeOut;
 	private double initTime;
 	private double Kp;
@@ -27,9 +27,8 @@ public class DriveStraight extends Command {
         userSpecifiedValues = true;
     }
     
-    public DriveStraight(double angleOffset, double timeOut, double speed, double Kp) {
+    public DriveStraight(double timeOut, double speed, double Kp) {
     	requires(chassis);
-    	desiredAngle = angleOffset;
     	this.timeOut = timeOut;
     	baseSpeed = speed;
     	this.Kp = Kp;
@@ -38,34 +37,34 @@ public class DriveStraight extends Command {
 
     protected void initialize() {
     	if (userSpecifiedValues) {
-    		desiredAngle	= chassis.getAngle() + SmartDashboard.getNumber("DriveStraight offset", 0);
+    		angleSetpoint	= chassis.getAngle() + SmartDashboard.getNumber("DriveStraight offset", 0);
         	baseSpeed		= SmartDashboard.getNumber("DriveStraight speed", 0.35);
         	Kp				= SmartDashboard.getNumber("DriveStraight Kp", 0.015);
         	timeOut			= SmartDashboard.getNumber("DriveStraight timeOut", 4);
     	} else {
-    		SmartDashboard.putNumber("DriveStraight offset", desiredAngle);
+    		SmartDashboard.putNumber("DriveStraight offset", angleSetpoint);
     		SmartDashboard.putNumber("DriveStraight speed", baseSpeed);
     		SmartDashboard.putNumber("DriveStraight Kp", Kp);
     		SmartDashboard.putNumber("DriveStraight timeOut", timeOut);
-    		desiredAngle += chassis.getAngle();
+    		angleSetpoint += chassis.getAngle();
     	}
     	
-    	SmartDashboard.putNumber("Desired Angle", desiredAngle);
+    	SmartDashboard.putNumber("Angle Setpoint", angleSetpoint);
     	initTime = Timer.getFPGATimestamp();
     }
 
     protected void execute() {
-    	error = chassis.getAngle() - desiredAngle;
+    	error = angleSetpoint - chassis.getAngle();
     	
-    	leftSpeed = -baseSpeed + (Kp * error);
-    	rightSpeed = -baseSpeed - (Kp * error);
+    	leftSpeed = -baseSpeed - (Kp * error);
+    	rightSpeed = -baseSpeed + (Kp * error);
     	
     	chassis.drive(leftSpeed, rightSpeed);
     	SmartDashboard.putNumber("Error", error);
     	SmartDashboard.putNumber("Left speed", leftSpeed);
     	SmartDashboard.putNumber("Right speed", rightSpeed);
     	SmartDashboard.putNumber("DriveStraight timeOut",
-    			Double.parseDouble(df.format(timeOut - (Timer.getFPGATimestamp() - initTime)))); // Time remaining
+    			Double.parseDouble(df.format(timeOut))); // Time remaining
     	
     }
 
