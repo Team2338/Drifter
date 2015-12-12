@@ -13,12 +13,14 @@ public final class Globals {
 	// Analog Input
 	public static final int gyroPort = 1; // Must be either 0 or 1
 	
-	// DIO
-	// TODO: Attach encoders to the robot
-//	public static final int leftEncoderPort = 1;
-//	public static final int rightEncoderPort = 2;
-	
-	// Other
+	// Constants
 	public static final double gyroSensitivity = 0.00667; // volts per degree per second
+	public static final double ticksPerInch = 0; // FIXME: Calculate actual value
+	
+	// Functionality
+	public static final boolean leftDriveMotorInverted = false; // FIXME: Integrate this
+	public static final boolean rightDriveMotorInverted = false; // FIXME: Integrate this
+	public static final boolean leftEncoderInverted = false;
+	public static final boolean rightEncoderInverted = false;
 	
 }

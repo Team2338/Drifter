@@ -16,7 +16,7 @@ public class TankDrive extends Command {
     protected void initialize() {}
 
     protected void execute() {
-    	Robot.chassis.drive(OI.leftStick.getY(), OI.rightStick.getY());
+    	Robot.chassis.drive(OI.getLeftStickY(), OI.getRightStickY());
     }
 
     protected boolean isFinished() {

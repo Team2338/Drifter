@@ -10,13 +10,17 @@ import static team.gif.Robot.chassis;
  * @author PatrickUbelhor
  */
 public class DriveStraight extends Command {
+	// TODO: Make this terminate within a tolerance, NOT a time-out value
+	// TODO: Distance PID should replace base speed!
 	
-	private double angleSetpoint;
 	private double timeOut;
-	private double initTime;
-	private double Kp;
-	private double error;
-	private double baseSpeed;
+	private double finishTime;
+	private double angleP;
+	private double angleSetpoint;
+	private double angleError;
+	private double distP;
+	private double distSetpoint; // FIXME: Implement this.
+	private double distError;
 	private double leftSpeed;
 	private double rightSpeed;
 	private final boolean userSpecifiedValues;
@@ -27,51 +31,53 @@ public class DriveStraight extends Command {
         userSpecifiedValues = true;
     }
     
-    public DriveStraight(double timeOut, double speed, double Kp) {
+    public DriveStraight(double timeOut, double distance,
+    					 double angleP,
+    					 double distP) {
     	requires(chassis);
-    	this.timeOut = timeOut;
-    	baseSpeed = speed;
-    	this.Kp = Kp;
+    	this.timeOut	= timeOut;
+    	this.angleP		= angleP;
+    	this.distP		= distP;
+    	distSetpoint	= distance;
     	userSpecifiedValues = false;
     }
 
+    // Initializes variables needed for PID loop.
     protected void initialize() {
     	if (userSpecifiedValues) {
-    		angleSetpoint	= chassis.getAngle() + SmartDashboard.getNumber("DriveStraight offset", 0);
-        	baseSpeed		= SmartDashboard.getNumber("DriveStraight speed", 0.35);
-        	Kp				= SmartDashboard.getNumber("DriveStraight Kp", 0.015);
+    		angleSetpoint	= chassis.getAngle();
+        	angleP			= SmartDashboard.getNumber("DriveStraight angleP", 0.015);
+        	distP			= SmartDashboard.getNumber("DriveStraight distP", 0);
         	timeOut			= SmartDashboard.getNumber("DriveStraight timeOut", 4);
+        	distSetpoint	= SmartDashboard.getNumber("DriveStraight distance", 1000) +
+        					  ((chassis.getLeftPosition() + chassis.getRightPosition()) / 2);
     	} else {
-    		SmartDashboard.putNumber("DriveStraight offset", angleSetpoint);
-    		SmartDashboard.putNumber("DriveStraight speed", baseSpeed);
-    		SmartDashboard.putNumber("DriveStraight Kp", Kp);
+    		SmartDashboard.putNumber("DriveStraight angleP", angleP);
     		SmartDashboard.putNumber("DriveStraight timeOut", timeOut);
-    		angleSetpoint += chassis.getAngle();
+    		SmartDashboard.putNumber("DrieStraight distance", distSetpoint);
+    		angleSetpoint = chassis.getAngle();
     	}
     	
-    	SmartDashboard.putNumber("Angle Setpoint", angleSetpoint);
-    	initTime = Timer.getFPGATimestamp();
+    	finishTime = Timer.getFPGATimestamp() + timeOut;
     }
 
     protected void execute() {
-    	error = angleSetpoint - chassis.getAngle();
+    	angleError = angleSetpoint - chassis.getAngle();
+    	distError = distSetpoint - ((chassis.getLeftPosition() + chassis.getRightPosition()) / 2);
     	
-    	leftSpeed = -baseSpeed - (Kp * error);
-    	rightSpeed = -baseSpeed + (Kp * error);
+    	leftSpeed = (distP * distError) + (angleP * angleError);
+    	rightSpeed = (distP * distError) - (angleP * angleError);
     	
     	chassis.drive(leftSpeed, rightSpeed);
-    	SmartDashboard.putNumber("Error", error);
+    	SmartDashboard.putNumber("Error", angleError);
     	SmartDashboard.putNumber("Left speed", leftSpeed);
     	SmartDashboard.putNumber("Right speed", rightSpeed);
-    	SmartDashboard.putNumber("DriveStraight timeOut",
-    			Double.parseDouble(df.format(timeOut))); // Time remaining
+    	SmartDashboard.putNumber("DriveStraight timeOut", Double.parseDouble(df.format(timeOut)));
     	
     }
 
     protected boolean isFinished() {
-    	// TODO: Make more efficient by adding initTime to timeOut earlier in code, so the
-    	// math operation only runs once. Probably not necessary, but whatever.
-        return Timer.getFPGATimestamp() - initTime >= timeOut;
+        return Timer.getFPGATimestamp() >= finishTime;
     }
 
     protected void end() {

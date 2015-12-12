@@ -15,6 +15,7 @@ public class Robot extends IterativeRobot {
 	public static final Drivetrain chassis = new Drivetrain();
 	public SendableChooser autoChooser;
 	public static OI oi;
+	public static final GIFDashboard dash = new GIFDashboard();
 	
 	private Command autoCommand;
 	private Command teleCommand;
@@ -31,13 +32,8 @@ public class Robot extends IterativeRobot {
 		autoChooser.addDefault("AntiAuto", new AntiAuto());
 		autoChooser.addObject("DriveStraight", new DriveStraight());
 		autoChooser.addObject("TurnBack", new TurnBack());
-		autoChooser.addObject("Rotate", new Rotate(270, 0.015));
+		autoChooser.addObject("Rotate", new Rotate(270, 0.015, 4));
 		SmartDashboard.putData("Auto Mode", autoChooser);
-		
-		SmartDashboard.putNumber("DriveStraight offset", 0);
-    	SmartDashboard.putNumber("DriveStraight speed", 0.35);
-    	SmartDashboard.putNumber("DriveStraight Kp", 0.015);
-    	SmartDashboard.putNumber("DriveStraight timeOut", 4);
 		
 		teleCommand = new TankDrive();
     }

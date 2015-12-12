@@ -1,8 +1,8 @@
 package team.gif.subsystems;
 
 import team.gif.Globals;
+import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Gyro;
-import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -10,32 +10,45 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class Drivetrain extends Subsystem {
     
-    Talon left = new Talon(Globals.leftDrivePort);
-    Talon right = new Talon(Globals.rightDrivePort);
-    Gyro gyro = new Gyro(Globals.gyroPort);
+    CANTalon leftMotor	= new CANTalon(Globals.leftDrivePort);
+    CANTalon rightMotor	= new CANTalon(Globals.rightDrivePort);
+    Gyro gyro			= new Gyro(Globals.gyroPort);
     
     public Drivetrain() {
     	super();
+    	leftMotor.reverseOutput(Globals.leftDriveMotorInverted);
+    	leftMotor.reverseSensor(Globals.leftEncoderInverted);
+    	leftMotor.setPosition(0);
+    	rightMotor.reverseOutput(Globals.rightDriveMotorInverted);
+    	rightMotor.reverseSensor(Globals.rightEncoderInverted);
+    	rightMotor.setPosition(0);
     }
     
-    // TODO: set motor invert in constructor w/ global variable, rather than hardcoded in like this.
-    public void drive(double leftSpeed, double rightSpeed) {
-    	left.set(leftSpeed);
-    	right.set(-rightSpeed);
+    public final void drive(final double leftSpeed, final double rightSpeed) {
+    	leftMotor.set(leftSpeed);
+    	rightMotor.set(rightSpeed);
     }
     
-    public void initGyro() {
+    public final double getLeftPosition() {
+    	return leftMotor.getPosition();
+    }
+    
+    public final double getRightPosition() {
+    	return rightMotor.getPosition();
+    }
+    
+    public final void initGyro() {
     	gyro.initGyro();
     }
 
-    public double getAngle() {
+    public final double getAngle() {
     	return gyro.getAngle();
     }
     
-    public void setSensitivity() {
-    	gyro.setSensitivity(Globals.gyroSensitivity);
+    public final void setSensitivity() {
+    	gyro.setSensitivity(Globals.gyroSensitivity); // TODO: Move to constructor?
     }
     
-    public void initDefaultCommand() {}
+    public final void initDefaultCommand() {}
     
 }

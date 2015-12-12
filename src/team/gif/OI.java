@@ -11,8 +11,8 @@ import team.gif.commands.*;
  */
 public class OI {
 	
-	public static final Joystick leftStick = new Joystick(0);
-	public static final Joystick rightStick = new Joystick(1);
+	private static final Joystick leftStick = new Joystick(0);
+	private static final Joystick rightStick = new Joystick(1);
 	
 	private final Button rightTrigger;
 	private final Button right2;
@@ -25,6 +25,14 @@ public class OI {
 		
 		rightTrigger.whenPressed(new TankDrive());
 		
+	}
+	
+	public static final double getLeftStickY() {
+		return -leftStick.getY();
+	}
+	
+	public static final double getRightStickY() {
+		return -rightStick.getY();
 	}
 	
 }
