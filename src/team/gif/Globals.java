@@ -16,6 +16,8 @@ public final class Globals {
 	// Constants
 	public static final double gyroSensitivity = 0.00667; // volts per degree per second
 	public static final double ticksPerInch = 0; // FIXME: Calculate actual value
+	public static final double robotWidth = 0; // In ticks. FIXME: need to calculate
+	public static final double kinematicMaxSpeed = 0.6;
 	
 	// Functionality
 	public static final boolean leftDriveMotorInverted = false; // FIXME: Integrate this

@@ -2,7 +2,7 @@ package team.gif.subsystems;
 
 import team.gif.Globals;
 import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.Gyro;
+import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -12,7 +12,7 @@ public class Drivetrain extends Subsystem {
     
     CANTalon leftMotor	= new CANTalon(Globals.leftDrivePort);
     CANTalon rightMotor	= new CANTalon(Globals.rightDrivePort);
-    Gyro gyro			= new Gyro(Globals.gyroPort);
+    AnalogGyro gyro		= new AnalogGyro(Globals.gyroPort);
     
     public Drivetrain() {
     	super();

@@ -15,7 +15,9 @@ public class OI {
 	private static final Joystick rightStick = new Joystick(1);
 	
 	private final Button rightTrigger;
+	@SuppressWarnings("unused")
 	private final Button right2;
+	@SuppressWarnings("unused")
 	private final Button right3;
     
 	public OI() {
